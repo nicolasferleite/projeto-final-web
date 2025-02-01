@@ -5,16 +5,20 @@ O projeto propõe o desenvolvimento de um site interativo para promover a consci
 
 ## :technologist: Membros da equipe
 
-Matrícula, nome e curso dos participantes.
+<ul>
+  <li>Nícolas Ferreira Leite, 552425, Ciência da Computação</li>
+  <li>Guilherme Lopes dos Santos, 556470, Ciência da Computação</li>
+  <li>Évila Maria Vasconcelos de Araújo, 556241, Ciência da Computação</li>
+</ul>
 
 ## :bulb: Objetivo Geral
-Descrever o objetivo de geral do projeto
+Criar um site interativo para conscientizar a comunidade sobre práticas sustentáveis e reciclagem.
 
 ## :eyes: Público-Alvo
-Público-alvo do projeto
+Comunidades locais, escolas e ONGs ambientais.
 
 ## :star2: Impacto Esperado
-Descreva o impacto esperado do projeto em relação ao público alvo
+Promover a educação ambiental e práticas sustentáveis na comunidade.
 
 ## :people_holding_hands: Papéis ou tipos de usuário da aplicação
 
