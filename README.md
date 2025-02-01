@@ -1,6 +1,7 @@
-# :checkered_flag: NOME DO PROJETO
+# :checkered_flag: O VERDE IMPORTA - Educação Ambiental
 
-Breve descrição do que o seu projeto faz.
+O projeto propõe o desenvolvimento de um site interativo para promover a conscientização ambiental, com foco em práticas sustentáveis e reciclagem. Destinado a comunidades locais, escolas e ONGs, o site oferecerá um Guia de Reciclagem com instruções detalhadas sobre separação de resíduos, Jogos Educativos interativos para ensinar sustentabilidade de forma lúdica e um Mapa de Coletas com pontos de coleta seletiva.
+
 
 ## :technologist: Membros da equipe
 
