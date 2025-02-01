@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Registro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="logo">
+        <img src='https://i.postimg.cc/pXj5L0SL/logoo.png' border='0' alt='logoo'/>
+        <h1 id="bemvindo">Bem-Vindo</h1>
+    </div>
+
+    <div class="registro">
+        <h2>Registre-se</h2>
+        <form>
+            <div class="radio">
+                <label><input type="radio" placeholder="professor">Professor</label>
+                <label><input type="radio" placeholder="aluno">Aluno</label>
+                <label><input type="radio" placeholder="professor">Administrador</label>
+            </div>
+            <div>
+                <label>Nome<input type="text" placeholder="Digite seu nome" required></label>
+            </div>
+            <div>
+                <label>Email<input type="email" placeholder="Digite seu email" required></label>
+            </div>
+            <div>
+                <label>Senha<input type="password" placeholder="Digite sua senha" required></label>
+            </div>
+            <div>
+                <label>Confirmar Senha<input type="password" placeholder="Confirme sua senha" required></label>
+            </div>
+            <button type="submit">Registrar</button>
+        </form>
+    </div>
+</body>
+</html>
