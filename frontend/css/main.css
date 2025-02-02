@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Be Vietnam Pro", serif;
 }
 
 a{
@@ -12,38 +13,43 @@ a{
 body {
     display: flex;
     flex-direction: column;
-    font-family: Arial, sans-serif;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 20px;
+    padding: 0px 40px;
     background-color: #90c381;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 80px;
+    z-index: 1000;
 }
 
 .perfil {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 25px;
 }
 
 .perfil img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
 }
 
 .titulo {
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
     display: flex;
     align-items: center;
 }
 
 .titulo img{
-    height: 100px;
+    height: 80px;
 }
 
 .container {
@@ -55,6 +61,10 @@ aside {
     width: 250px;
     background-color: #48793c;
     padding: 20px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: calc(100vh - 80px);
 }
 
 nav ul {
@@ -78,5 +88,105 @@ nav ul li a:hover {
 
 main {
     flex: 1;
-    padding: 20px;
+    padding-top: 20px;
+    margin-left: 250px;
+    margin-top: 50px;
+    width: calc(100% - 250px);
+}
+
+main p{
+    margin-top: 10px;
+    font-size: 16px;
+    text-align: justify;
+}
+
+main h2{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 36px;
+}
+
+.introducao{ 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.introducao img{
+    margin: 20px 0;
+    width: 100%;
+}
+
+.introducao h1{
+    color: #48793c;
+    font-size: 36px;
+}
+
+section{
+    padding: 40px;
+    padding-bottom: 30px;
+}
+
+.guias {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+}
+
+.guias h2 {
+    grid-column: span 3;
+    text-align: center;
+}
+
+.guia {
+    background-color: #48793c;
+    transition: transform 0.3s ease-in-out;
+    color: white;
+    text-align: center;
+    padding: 10px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.guia img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover; 
+    border-radius: 10px; 
+}
+
+.guia:hover {
+    transform: scale(1.1);
+}
+
+.frase{
+    margin-top: 20px;
+}
+
+footer{
+    background-color: #90c381;
+    padding: 20px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+}
+
+.links img{
+    height: 20px;
+    margin-left: 5px;
+}
+
+.links{
+    position: absolute;
+    bottom: 20px;
+    left: 150px;
 }
