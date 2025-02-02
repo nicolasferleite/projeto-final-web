@@ -1,4 +1,7 @@
 *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: "Be Vietnam Pro", serif;
 }
 
@@ -14,6 +17,55 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
+a{
+    text-decoration: none;
+    color: #48793c;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 40px;
+    background-color: #90c381;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 80px;
+    z-index: 1000;
+    border-bottom: 3px solid #48793c;
+}
+
+.perfil {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.perfil img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+.titulo {
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.titulo img{
+    height: 80px;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
 .game-container {
     display: flex;
     flex-wrap: wrap;
