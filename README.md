@@ -25,10 +25,12 @@ Promover a educação ambiental e práticas sustentáveis na comunidade.
 -   **Professor:**
     -   Criar e gerenciar postagens informativas sobre conteúdos ambientais.
     -   Responder dúvidas de usuários nos comentários.
+    -   Fazer upload de materiais didáticos.
 -   **Usuário:**
     -   Criar conta e realizar login no sistema.
     -   Comentar em postagens e interagir no fórum.
     -   Jogar os jogos educativos disponíveis.
+    -   Visualizar materiais didáticos.
 -   **Administrador:**
     -   Gerenciar postagens e comentários, podendo remover conteúdos impróprios.
     -   Gerenciar usuários, podendo banir contas se necessário.
@@ -37,7 +39,7 @@ Promover a educação ambiental e práticas sustentáveis na comunidade.
 
 
 -   **Jogos de conscientização ambiental:**
-    -   Disponível para usuário logados
+    -   Disponível para usuários logados.
 -   **Fórum sobre educação ambiental:**
     -   Professores podem criar, visualizar, editar e  e admnistradores podem excluir postagens e comentários.
     -   Usuários podem interagir no fórum (comentários), enquanto professores publicam conteúdos educativos.
@@ -50,10 +52,17 @@ Promover a educação ambiental e práticas sustentáveis na comunidade.
 -   **Seção de materiais didáticos:**
     -   Professores podem adicionar materiais educativos para download.
     -   Usuários logados podem visualizar e baixar os materiais.
+      
 ## :spiral_calendar: Entidades ou tabelas do sistema
 
-Liste as principais entidades do sistema.
-
+-   **Usuário** (ID, Nome, Email, Senha, Tipo de Usuário)
+-   **Administrador** (Herda de Usuário, Permissões Especiais)
+-   **Professor** (Herda de Usuário, Permissão para Criar Postagens)
+-   **Postagens** (ID, Título, Conteúdo, Autor, Data de Publicação)
+-   **Comentários** (ID, Postagem, Usuário, Conteúdo, Data)
+-   **Jogos** (ID, Nome, Descrição, Link, Data de Criação)
+-   **Guias Didáticos** (ID, Título, Conteúdo, Autor, Data de Publicação)
+-   **Mapa de Coletas** (ID, Localização, Descrição, Tipo de Resíduo Aceito)
 
 ----
 
