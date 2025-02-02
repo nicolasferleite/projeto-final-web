@@ -22,14 +22,34 @@ Promover a educação ambiental e práticas sustentáveis na comunidade.
 
 ## :people_holding_hands: Papéis ou tipos de usuário da aplicação
 
-Informe aqui os tipos de usuário que irão interagir com a aplicação. Ex: administrador, locador, locatario, usuário não logado.
-
-> Tenha em mente que obrigatoriamente a aplicação deve possuir funcionalidades acessíveis a todos os tipos de usuário e outra funcionalidades restritas a certos tipos de usuários.
+-   **Professor:**
+    -   Criar e gerenciar postagens informativas sobre conteúdos ambientais.
+    -   Responder dúvidas de usuários nos comentários.
+-   **Usuário:**
+    -   Criar conta e realizar login no sistema.
+    -   Comentar em postagens e interagir no fórum.
+    -   Jogar os jogos educativos disponíveis.
+-   **Administrador:**
+    -   Gerenciar postagens e comentários, podendo remover conteúdos impróprios.
+    -   Gerenciar usuários, podendo banir contas se necessário.
 
 ## :triangular_flag_on_post:	 Principais funcionalidades da aplicação
 
-Descreve ou liste brevemente as principais funcionalidades da aplicação que será desenvolvida. Destaque a funcionalidades que serão acessévies a todos os usuários e aquelas restriras a usuários logados.
 
+-   **Jogos de conscientização ambiental:**
+    -   Disponível para usuário logados
+-   **Fórum sobre educação ambiental:**
+    -   Professores podem criar, visualizar, editar e  e admnistradores podem excluir postagens e comentários.
+    -   Usuários podem interagir no fórum (comentários), enquanto professores publicam conteúdos educativos.
+-   **Guia de reciclagem:**
+    -   Disponível para todos os usuários sem necessidade de login.
+    -   Administrador pode atualizar as informações do guia.
+-   **Mapa de pontos de coleta seletiva:**
+    -   Disponível para todos os usuários sem necessidade de login.
+    -   Administração pode adicionar, editar ou remover pontos de coleta.
+-   **Seção de materiais didáticos:**
+    -   Professores podem adicionar materiais educativos para download.
+    -   Usuários logados podem visualizar e baixar os materiais.
 ## :spiral_calendar: Entidades ou tabelas do sistema
 
 Liste as principais entidades do sistema.
