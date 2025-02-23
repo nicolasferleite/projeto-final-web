@@ -70,7 +70,7 @@ fetch('http://localhost:1337/api/postagens')
                 postagensContainer.appendChild(postagemDiv);
             });
     
-            // Adiciona eventos para os botões
+           
             adicionarEventos();
             carregarCurtidas();
             carregarRespostas();
