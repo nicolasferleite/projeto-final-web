@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ponto_de_coletas",
+  "info": {
+    "singularName": "ponto-de-coleta",
+    "pluralName": "ponto-de-coletas",
+    "displayName": "Ponto de Coleta"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nome": {
+      "type": "string",
+      "minLength": 1
+    },
+    "endereco": {
+      "type": "text",
+      "minLength": 1
+    },
+    "latitude": {
+      "type": "float"
+    },
+    "longitude": {
+      "type": "float"
+    },
+    "tipoResiduo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "horarioFuncionamento": {
+      "type": "string"
+    },
+    "contato": {
+      "type": "string"
+    },
+    "id_ponto": {
+      "type": "uid",
+      "targetField": "nome",
+      "required": true
+    }
+  }
+}

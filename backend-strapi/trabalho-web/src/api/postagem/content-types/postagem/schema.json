@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "postagens",
+  "info": {
+    "singularName": "postagem",
+    "pluralName": "postagens",
+    "displayName": "postagem",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "usuario": {
+      "type": "string",
+      "minLength": 1
+    },
+    "data": {
+      "type": "datetime"
+    },
+    "conteudo": {
+      "type": "text",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "id_postagem": {
+      "type": "uid",
+      "targetField": "usuario",
+      "required": true
+    },
+    "comentarios": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comentario.comentario",
+      "mappedBy": "postagem"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "postagems"
+    }
+  }
+}
