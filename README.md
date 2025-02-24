@@ -102,6 +102,7 @@ Strapi.
 
 | Método HTTP | URL |
 | --- | --- |
-| GET | api/entidade1/|
-| POST | http://localhost:1337/api/postagem |
+| GET | http://localhost:1337/api/comentarios|
+| POST | http://localhost:1337/api/postagems |
 | POST | http://localhost:1337/api/materiais-didaticos |
+| POST | http://localhost:1337/api/comentarios |
