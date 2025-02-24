@@ -91,8 +91,8 @@ Lista as tecnologias, frameworks e bibliotecas utilizados.
 | Postagem | X |  X  |  X | X |
 | Comentários | X |  X  |  | X |
 | Pontos de Coleta |  |  X  |  |  |
-| Guias Didáticos | X |  X  |  | X |
-| Materiais Didáticos | X |    |  |  |
+| Guias Didáticos |  |  X  |  |  |
+| Materiais Didáticos | X |  X |  | X |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
