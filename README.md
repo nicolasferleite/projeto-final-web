@@ -104,3 +104,4 @@ Strapi.
 | --- | --- |
 | GET | api/entidade1/|
 | POST | api/postagem |
+| POST | api/material-didatico |
