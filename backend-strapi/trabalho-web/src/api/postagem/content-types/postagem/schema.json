@@ -1,44 +1,43 @@
 {
   "kind": "collectionType",
-  "collectionName": "postagens",
+  "collectionName": "postagems",
   "info": {
     "singularName": "postagem",
-    "pluralName": "postagens",
-    "displayName": "postagem",
-    "description": ""
+    "pluralName": "postagems",
+    "displayName": "postagem"
   },
   "options": {
     "draftAndPublish": true
   },
   "attributes": {
-    "usuario": {
+    "Usuario": {
       "type": "string",
       "minLength": 1
     },
-    "data": {
-      "type": "datetime"
-    },
     "conteudo": {
       "type": "text",
-      "minLength": 1,
-      "maxLength": 1000
+      "minLength": 1
+    },
+    "data": {
+      "type": "datetime",
+      "required": false
+    },
+    "titulo": {
+      "type": "string",
+      "minLength": 1
     },
     "id_postagem": {
-      "type": "uid",
-      "targetField": "usuario",
+      "type": "integer",
       "required": true
+    },
+    "likes": {
+      "type": "integer",
+      "required": false
     },
     "comentarios": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::comentario.comentario",
-      "mappedBy": "postagem"
-    },
-    "users_permissions_user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "postagems"
+      "target": "api::comentario.comentario"
     }
   }
 }

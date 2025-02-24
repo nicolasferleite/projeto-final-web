@@ -75,11 +75,11 @@ Promover a educação ambiental e práticas sustentáveis na comunidade.
 
 **Frontend:**
 
-HTML, CSS, JavaScript.
+Lista as tecnologias, frameworks e bibliotecas utilizados.
 
 **Backend:**
 
-Strapi.
+Lista as tecnologias, frameworks e bibliotecas utilizados.
 
 
 ## :shipit: Operações implementadas para cada entidade da aplicação
@@ -87,22 +87,15 @@ Strapi.
 
 | Entidade| Criação | Leitura | Atualização | Remoção |
 | --- | --- | --- | --- | --- |
-| Usuário | X |  X  | X | X |
-| Postagem | X |  X  |  X | X |
-| Comentários | X |  X  |  | X |
-| Pontos de Coleta |  |  X  |  |  |
-| Guias Didáticos |  |  X  |  |  |
-| Materiais Didáticos | X |  X |  | X |
+| Entidade 1 | X |  X  |  | X |
+| Entidade 2 | X |    |  X | X |
+| Entidade 3 | X |    |  |  |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
 ## :neckbeard: Rotas da API REST utilizadas
 
-
-
 | Método HTTP | URL |
 | --- | --- |
-| GET | http://localhost:1337/api/comentarios|
-| POST | http://localhost:1337/api/postagems |
-| POST | http://localhost:1337/api/materiais-didaticos |
-| POST | http://localhost:1337/api/comentarios |
+| GET | api/entidade1/|
+| POST | api/entidade2 |

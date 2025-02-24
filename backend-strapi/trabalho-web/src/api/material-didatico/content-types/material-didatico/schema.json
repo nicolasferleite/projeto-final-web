@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "materiais_didaticos",
+  "info": {
+    "singularName": "material-didatico",
+    "pluralName": "materiais-didaticos",
+    "displayName": "Material Didático",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "titulo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "descricao": {
+      "type": "text",
+      "minLength": 1
+    },
+    "arquivo": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "video_url": {
+      "type": "text",
+      "minLength": 1
+    },
+    "autor": {
+      "type": "string",
+      "required": true
+    },
+    "id_material": {
+      "type": "integer",
+      "required": true
+    }
+  }
+}

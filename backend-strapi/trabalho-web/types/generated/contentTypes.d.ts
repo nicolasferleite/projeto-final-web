@@ -412,29 +412,22 @@ export interface ApiComentarioComentario extends Struct.CollectionTypeSchema {
   attributes: {
     conteudo: Schema.Attribute.Text &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 100;
         minLength: 1;
       }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    id_comentario: Schema.Attribute.UID<'usuario'> & Schema.Attribute.Required;
+    herdou: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::comentario.comentario'
     > &
       Schema.Attribute.Private;
-    postagem: Schema.Attribute.Relation<'manyToOne', 'api::postagem.postagem'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    users_permissions_user: Schema.Attribute.Relation<
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    usuario: Schema.Attribute.String;
   };
 }
 
@@ -506,6 +499,50 @@ export interface ApiGuiaDidaticoGuiaDidatico
   };
 }
 
+export interface ApiMaterialDidaticoMaterialDidatico
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'materiais_didaticos';
+  info: {
+    description: '';
+    displayName: 'Material Did\u00E1tico';
+    pluralName: 'materiais-didaticos';
+    singularName: 'material-didatico';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    arquivo: Schema.Attribute.Media<'files', true>;
+    autor: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descricao: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    id_material: Schema.Attribute.Integer & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::material-didatico.material-didatico'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    titulo: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    video_url: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
+  };
+}
+
 export interface ApiPontoDeColetaPontoDeColeta
   extends Struct.CollectionTypeSchema {
   collectionName: 'ponto_de_coletas';
@@ -552,11 +589,10 @@ export interface ApiPontoDeColetaPontoDeColeta
 }
 
 export interface ApiPostagemPostagem extends Struct.CollectionTypeSchema {
-  collectionName: 'postagens';
+  collectionName: 'postagems';
   info: {
-    description: '';
     displayName: 'postagem';
-    pluralName: 'postagens';
+    pluralName: 'postagems';
     singularName: 'postagem';
   };
   options: {
@@ -569,14 +605,14 @@ export interface ApiPostagemPostagem extends Struct.CollectionTypeSchema {
     >;
     conteudo: Schema.Attribute.Text &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 1000;
         minLength: 1;
       }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     data: Schema.Attribute.DateTime;
-    id_postagem: Schema.Attribute.UID<'usuario'> & Schema.Attribute.Required;
+    id_postagem: Schema.Attribute.Integer & Schema.Attribute.Required;
+    likes: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -584,14 +620,14 @@ export interface ApiPostagemPostagem extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    titulo: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    users_permissions_user: Schema.Attribute.Relation<
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    usuario: Schema.Attribute.String &
+    Usuario: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         minLength: 1;
       }>;
@@ -1057,10 +1093,6 @@ export interface PluginUsersPermissionsUser
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    comentario: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::comentario.comentario'
-    >;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -1082,7 +1114,6 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
-    postagems: Schema.Attribute.Relation<'oneToMany', 'api::postagem.postagem'>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1116,6 +1147,7 @@ declare module '@strapi/strapi' {
       'api::comentario.comentario': ApiComentarioComentario;
       'api::global.global': ApiGlobalGlobal;
       'api::guia-didatico.guia-didatico': ApiGuiaDidaticoGuiaDidatico;
+      'api::material-didatico.material-didatico': ApiMaterialDidaticoMaterialDidatico;
       'api::ponto-de-coleta.ponto-de-coleta': ApiPontoDeColetaPontoDeColeta;
       'api::postagem.postagem': ApiPostagemPostagem;
       'plugin::content-releases.release': PluginContentReleasesRelease;

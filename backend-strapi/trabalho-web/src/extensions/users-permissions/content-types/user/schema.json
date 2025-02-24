@@ -64,18 +64,6 @@
       "target": "plugin::users-permissions.role",
       "inversedBy": "users",
       "configurable": false
-    },
-    "postagems": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::postagem.postagem",
-      "mappedBy": "users_permissions_user"
-    },
-    "comentario": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::comentario.comentario",
-      "mappedBy": "users_permissions_user"
     }
   }
 }
