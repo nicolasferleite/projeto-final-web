@@ -133,161 +133,130 @@ footer{
     left: 150px;
 }
 
-/* Estilização geral */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #dae0e6;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-}
-
 .container {
     margin-top: 20px;
 }
 
-/* Estilo das postagens */
-.postagem {
-    background-color: white;
-    border-radius: 8px;
+.forum {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.forum header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.forum header h1 {
+    margin: 0;
+    color: #333;
+}
+
+#post-form {
+    margin-bottom: 20px;
+}
+
+#post-form h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+#post-form input[type="text"],
+#post-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+#post-form button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+#post-form button:hover {
+    background-color: #0056b3;
+}
+
+#posts-container {
+    margin-top: 20px;
+}
+
+.post {
+    background-color: #f9f9f9;
     padding: 15px;
+    border-radius: 5px;
     margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
+    border-left: 4px solid #007BFF;
 }
 
-/* Nome do usuário */
-.postagem h3 {
-    font-size: 16px;
-    color: #0079d3;
-    margin-bottom: 5px;
+.post h2 {
+    margin-top: 0;
+    color: #333;
 }
 
-/* Conteúdo da postagem */
-.postagem p {
-    font-size: 14px;
+.post p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.post button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.post button:hover {
+    background-color: #0056b3;
+}
+
+.comments {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 3px;
+    background-color: #e9ecef;
+}
+
+.comments .comment {
     margin-bottom: 10px;
 }
 
-/* Data da postagem */
-.postagem small {
-    font-size: 12px;
-    color: gray;
-}
-
-/* Container de interações */
-.interacoes {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.comments form {
     margin-top: 10px;
 }
 
-/* Botões de interação */
-.botao {
-    display: flex;
-    align-items: center;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    color: gray;
-    padding: 5px;
-    transition: 0.3s;
-}
-
-.botao:hover {
-    color: #0079d3;
-}
-
-.botao i {
-    margin-right: 5px;
-}
-
-/* Botões de curtida */
-.curtidas {
-    display: flex;
-    align-items: center;
-}
-
-.curtidas .botao {
-    color: black;
-}
-
-.curtidas .botao.ativo {
-    color: #ff4500; /* Cor vermelha ao curtir */
-}
-
-.interacoes {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-/* Botões de interação */
-.botao {
-    display: flex;
-    align-items: center;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    color: gray;
-    padding: 5px;
-    transition: 0.3s;
-}
-
-.botao:hover {
-    color: #0079d3;
-}
-
-.botao i {
-    margin-right: 5px;
-}
-
-/* Botões de curtida */
-.curtidas {
-    display: flex;
-    align-items: center;
-}
-
-.curtidas .botao.ativo {
-    color: #ff4500; /* Cor vermelha ao curtir */
-}
-
-/* Respostas */
-.respostas {
-    margin-top: 10px;
-    padding-left: 20px;
-    border-left: 2px solid #ddd;
-}
-
-.resposta {
-    background: #f8f9fa;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-}
-
-/* Input de resposta */
-.responder-container {
-    margin-top: 10px;
-}
-
-.responder-container input {
+.comments textarea {
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
 }
 
-.forum h1{
-    color: #48793c;
-    margin-bottom: 20px;
+.comments button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.comments button:hover {
+    background-color: #0056b3;
 }
