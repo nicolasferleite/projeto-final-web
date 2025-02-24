@@ -75,11 +75,11 @@ Promover a educação ambiental e práticas sustentáveis na comunidade.
 
 **Frontend:**
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+HTML, CSS, JavaScript.
 
 **Backend:**
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+Strapi.
 
 
 ## :shipit: Operações implementadas para cada entidade da aplicação
@@ -101,4 +101,9 @@ Lista as tecnologias, frameworks e bibliotecas utilizados.
 | Método HTTP | URL |
 | --- | --- |
 | GET | api/entidade1/|
-| POST | api/entidade2 |
+₢## :neckbeard: Rotas da API REST utilizadas
+
+| Método HTTP | URL |
+| --- | --- |
+| GET | api/entidade1/|
+| POST | api/postagem |
