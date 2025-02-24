@@ -98,10 +98,7 @@ Strapi.
 
 ## :neckbeard: Rotas da API REST utilizadas
 
-| Método HTTP | URL |
-| --- | --- |
-| GET | api/entidade1/|
-₢## :neckbeard: Rotas da API REST utilizadas
+
 
 | Método HTTP | URL |
 | --- | --- |
