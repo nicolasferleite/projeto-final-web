@@ -1,141 +1,206 @@
-fetch('http://localhost:1337/api/postagens')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(json => {
-        console.log(json);
+document.addEventListener("DOMContentLoaded", function () {
+    const postsContainer = document.getElementById("posts-container");
+    const postForm = document.getElementById("create-post-form");
 
-        const postagens = json.data;
-        const postagensContainer = document.getElementById("postagens");
-        
-        postagensContainer.innerHTML = "";
-        
-        postagens.forEach(post => {
-            const postagemDiv = document.createElement("div");
-            postagemDiv.classList.add("postagem");
-            postagemDiv.innerHTML = `
-                <h3>${post.usuario}</h3>
-                <p>${post.conteudo}</p>
-                <small>Publicado em: ${new Date(post.data).toLocaleString()}</small>
-            `;
-            postagensContainer.appendChild(postagemDiv);
-        });
-    })
-    .catch(error => {
-        console.error('Erro ao buscar postagens:', error);
-        document.getElementById("postagens").innerHTML = "<p>Erro ao carregar postagens.</p>";
+    postForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const title = document.getElementById("post-title").value.trim();
+        const content = document.getElementById("post-content").value.trim();
+
+        if (title === "" || content === "") return;
+
+        submitPost(title, content);
     });
 
-
-    document.addEventListener("DOMContentLoaded", () => {
-        carregarPostagens();
-    });
+    function submitPost(title, content) {
+        console.log(`📝 Enviando nova postagem: ${title}`);
     
-    async function carregarPostagens() {
-        try {
-            const response = await fetch("http://localhost:1337/api/postagens");
+        fetch("http://localhost:1337/api/postagems", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                data: {
+                    conteudo: content,
+                    data: new Date().toISOString(),
+                    titulo: title,
+                    id_postagem: 1,
+                    likes: 0,
+                    comentarios: []
+                }
+            })
+        })
+        .then(response => {
             if (!response.ok) {
-                throw new Error(`Erro HTTP! Status: ${response.status}`);
+                return response.json().then(errorData => {
+                    throw new Error(`Erro HTTP: ${response.status} - ${JSON.stringify(errorData)}`);
+                });
             }
+            return response.json();
+        })
+        .then(newPostData => {
+            console.log("Resposta da API:", newPostData);
     
-            const json = await response.json();
-            const postagensContainer = document.getElementById("postagens");
-            postagensContainer.innerHTML = "";
+            if (newPostData.data) {
+                console.log("✅ Postagem salva com sucesso!");
     
-            json.data.forEach(post => {
-                const postagemDiv = document.createElement("div");
-                postagemDiv.classList.add("postagem");
-                postagemDiv.innerHTML = `
-                    <h3>${post.usuario}</h3>
-                    <p>${post.conteudo}</p>
-                    <small>Publicado em: ${new Date(post.data).toLocaleString()}</small>
-                    <div class="interacoes">
-                        <div class="curtidas">
-                            <button class="botao curtir" data-id="${post.id}">
-                                👍 <span id="curtidas-${post.id}">0</span>
-                            </button>
-                        </div>
-                        <button class="botao comentar" data-id="${post.id}">💬 Comentar</button>
-                        <button class="botao compartilhar">🔗 Compartilhar</button>
-                    </div>
-                    <div class="responder-container" id="responder-${post.id}" style="display:none;">
-                        <input type="text" placeholder="Escreva uma resposta..." id="input-${post.id}">
-                        <button class="botao enviar-resposta" data-id="${post.id}">Enviar</button>
-                    </div>
-                    <div class="respostas" id="respostas-${post.id}"></div>
-                `;
-                postagensContainer.appendChild(postagemDiv);
-            });
+                const postId = newPostData.data.id;
+                const postTitle = newPostData.data.attributes ? newPostData.data.attributes.titulo : newPostData.data.titulo;
+                const postContent = newPostData.data.attributes ? newPostData.data.attributes.conteudo : newPostData.data.conteudo; 
     
-           
-            adicionarEventos();
-            carregarCurtidas();
-            carregarRespostas();
-        } catch (error) {
-            console.error("Erro ao carregar postagens:", error);
-        }
-    }
+                addPostToUI(postId, postTitle, postContent);
     
-    function adicionarEventos() {
-        document.querySelectorAll(".curtir").forEach(botao => {
-            botao.addEventListener("click", () => {
-                let postId = botao.getAttribute("data-id");
-                curtirPostagem(postId);
-            });
-        });
-    
-        document.querySelectorAll(".comentar").forEach(botao => {
-            botao.addEventListener("click", () => {
-                let postId = botao.getAttribute("data-id");
-                document.getElementById(`responder-${postId}`).style.display = "block";
-            });
-        });
-    
-        document.querySelectorAll(".enviar-resposta").forEach(botao => {
-            botao.addEventListener("click", () => {
-                let postId = botao.getAttribute("data-id");
-                let input = document.getElementById(`input-${postId}`);
-                adicionarResposta(postId, input.value);
-                input.value = "";
-            });
+                document.getElementById("post-title").value = "";
+                document.getElementById("post-content").value = "";
+            } else {
+                console.error("Erro ao adicionar postagem:", newPostData);
+            }
+        })
+        .catch(error => {
+            console.error("❌ Erro ao enviar postagem:", error.message);
+            alert("Erro ao adicionar postagem: " + error.message);
         });
     }
     
-    function curtirPostagem(postId) {
-        let curtidas = JSON.parse(localStorage.getItem("curtidas")) || {};
-        curtidas[postId] = (curtidas[postId] || 0) + 1;
-        localStorage.setItem("curtidas", JSON.stringify(curtidas));
-        document.getElementById(`curtidas-${postId}`).textContent = curtidas[postId];
+    function addPostToUI(postId, titulo, conteudo) {
+        const postDiv = document.createElement("div");
+        postDiv.classList.add("post");
+
+        const title = document.createElement("h2");
+        title.textContent = titulo;
+        postDiv.appendChild(title);
+
+        const content = document.createElement("p");
+        content.textContent = conteudo;
+        postDiv.appendChild(content);
+
+        const btnComments = document.createElement("button");
+        btnComments.textContent = "Comentários";
+        btnComments.addEventListener("click", function () {
+            toggleComments(postId, postDiv);
+        });
+        postDiv.appendChild(btnComments);
+
+        postsContainer.prepend(postDiv);
     }
-    
-    function carregarCurtidas() {
-        let curtidas = JSON.parse(localStorage.getItem("curtidas")) || {};
-        for (let postId in curtidas) {
-            if (document.getElementById(`curtidas-${postId}`)) {
-                document.getElementById(`curtidas-${postId}`).textContent = curtidas[postId];
-            }
+
+    function loadPosts() {
+        postsContainer.innerHTML = "";
+
+        fetch("http://localhost:1337/api/postagems")
+            .then(response => response.json())
+            .then(data => {
+                const posts = data.data;
+                posts.forEach(post => {
+                    const postTitle = post.attributes ? post.attributes.titulo : post.titulo;
+                    const postContent = post.attributes ? post.attributes.conteudo : post.conteudo;
+                    addPostToUI(post.id, postTitle, postContent);
+                });
+            })
+            .catch(error => console.error("Erro ao carregar posts:", error));
+    }
+
+
+    function toggleComments(postId, postDiv) {
+        let commentsContainer = postDiv.querySelector(".comments");
+
+        if (commentsContainer) {
+            commentsContainer.remove();
+            return;
         }
+
+        commentsContainer = document.createElement("div");
+        commentsContainer.classList.add("comments");
+        commentsContainer.dataset.postId = postId;
+
+        fetch("http://localhost:1337/api/comentarios")
+            .then(response => response.json())
+            .then(data => {
+                const allComments = data.data;
+                const filteredComments = allComments.filter(comment => comment.herdou === postId);
+
+                if (filteredComments.length > 0) {
+                    filteredComments.forEach(comment => {
+                        const commentDiv = createCommentElement(comment.conteudo);
+                        commentsContainer.appendChild(commentDiv);
+                    });
+                } else {
+                    const noComments = document.createElement("p");
+                    noComments.textContent = "Sem comentários.";
+                    commentsContainer.appendChild(noComments);
+                }
+            })
+            .catch(error => console.error("Erro ao carregar comentários:", error));
+
+        const commentForm = document.createElement("form");
+        commentForm.style.marginTop = "1rem";
+
+        const textarea = document.createElement("textarea");
+        textarea.placeholder = "Escreva seu comentário";
+        textarea.required = true;
+        textarea.rows = 3;
+        textarea.cols = 40;
+        commentForm.appendChild(textarea);
+
+        const submitButton = document.createElement("button");
+        submitButton.type = "submit";
+        submitButton.textContent = "Enviar Comentário";
+        commentForm.appendChild(submitButton);
+
+        commentForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const commentContent = textarea.value.trim();
+            if (commentContent === "") return;
+
+            submitComment(commentContent, postId, commentsContainer, textarea);
+        });
+
+        commentsContainer.appendChild(commentForm);
+        postDiv.appendChild(commentsContainer);
     }
-    
-    function adicionarResposta(postId, conteudo) {
-        if (!conteudo.trim()) return;
-        let respostas = JSON.parse(localStorage.getItem("respostas")) || {};
-        if (!respostas[postId]) respostas[postId] = [];
-        respostas[postId].push(conteudo);
-        localStorage.setItem("respostas", JSON.stringify(respostas));
-        carregarRespostas();
+
+    function createCommentElement(commentText) {
+        const commentDiv = document.createElement("div");
+        commentDiv.style.marginBottom = "0.5rem";
+        commentDiv.innerHTML = `<strong>Comentário:</strong> ${commentText}`;
+        return commentDiv;
     }
-    
-    function carregarRespostas() {
-        let respostas = JSON.parse(localStorage.getItem("respostas")) || {};
-        for (let postId in respostas) {
-            let container = document.getElementById(`respostas-${postId}`);
-            if (container) {
-                container.innerHTML = respostas[postId].map(res => `<div class="resposta">${res}</div>`).join("");
+
+    function submitComment(commentContent, postId, commentsContainer, textarea) {
+        console.log(`📝 Enviando novo comentário para a postagem ID: ${postId}`);
+
+        fetch("http://localhost:1337/api/comentarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                data: {
+                    conteudo: commentContent,
+                    herdou: postId
+                }
+            })
+        })
+        .then(response => response.json())
+        .then(newCommentData => {
+            if (newCommentData.data) {
+                console.log("✅ Comentário salvo com sucesso!");
+
+                const newCommentDiv = createCommentElement(commentContent);
+                commentsContainer.insertBefore(newCommentDiv, commentsContainer.querySelector("form"));
+
+                textarea.value = "";
+            } else {
+                console.error("Erro ao adicionar comentário:", newCommentData);
             }
-        }
+        })
+        .catch(error => {
+            console.error("❌ Erro ao enviar comentário:", error.message);
+            alert("Erro ao adicionar comentário: " + error.message);
+        });
     }
-    
+
+    loadPosts();
+});
