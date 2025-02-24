@@ -87,9 +87,12 @@ Lista as tecnologias, frameworks e bibliotecas utilizados.
 
 | Entidade| Criação | Leitura | Atualização | Remoção |
 | --- | --- | --- | --- | --- |
-| Entidade 1 | X |  X  |  | X |
-| Entidade 2 | X |    |  X | X |
-| Entidade 3 | X |    |  |  |
+| Usuário | X |  X  | X | X |
+| Postagem | X |  X  |  X | X |
+| Comentários | X |  X  |  | X |
+| Pontos de Coleta |  |  X  |  |  |
+| Guias Didáticos | X |  X  |  | X |
+| Materiais Didáticos | X |    |  |  |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
