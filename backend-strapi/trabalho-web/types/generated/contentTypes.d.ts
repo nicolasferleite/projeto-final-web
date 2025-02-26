@@ -417,17 +417,21 @@ export interface ApiComentarioComentario extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    herdou: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::comentario.comentario'
     > &
       Schema.Attribute.Private;
+    postagem: Schema.Attribute.Relation<'manyToOne', 'api::postagem.postagem'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -457,42 +461,6 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     siteDescription: Schema.Attribute.Text & Schema.Attribute.Required;
     siteName: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiGuiaDidaticoGuiaDidatico
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'guias_didaticos';
-  info: {
-    description: '';
-    displayName: 'Guias Did\u00E1ticos';
-    pluralName: 'guias-didaticos';
-    singularName: 'guia-didatico';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    conteudo: Schema.Attribute.Text &
-      Schema.Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    data: Schema.Attribute.Date;
-    id_guia: Schema.Attribute.UID;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::guia-didatico.guia-didatico'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    titulo: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -536,6 +504,10 @@ export interface ApiMaterialDidaticoMaterialDidatico
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     video_url: Schema.Attribute.Text &
       Schema.Attribute.SetMinMaxLength<{
         minLength: 1;
@@ -585,12 +557,17 @@ export interface ApiPontoDeColetaPontoDeColeta
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
 export interface ApiPostagemPostagem extends Struct.CollectionTypeSchema {
   collectionName: 'postagems';
   info: {
+    description: '';
     displayName: 'postagem';
     pluralName: 'postagems';
     singularName: 'postagem';
@@ -610,9 +587,6 @@ export interface ApiPostagemPostagem extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    data: Schema.Attribute.DateTime;
-    id_postagem: Schema.Attribute.Integer & Schema.Attribute.Required;
-    likes: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -627,10 +601,10 @@ export interface ApiPostagemPostagem extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Usuario: Schema.Attribute.String &
-      Schema.Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1089,10 +1063,13 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    comentarios: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::comentario.comentario'
+    >;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -1109,11 +1086,20 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
+    material_didaticos: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::material-didatico.material-didatico'
+    >;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    ponto_de_coletas: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::ponto-de-coleta.ponto-de-coleta'
+    >;
+    postagems: Schema.Attribute.Relation<'oneToMany', 'api::postagem.postagem'>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1146,7 +1132,6 @@ declare module '@strapi/strapi' {
       'api::about.about': ApiAboutAbout;
       'api::comentario.comentario': ApiComentarioComentario;
       'api::global.global': ApiGlobalGlobal;
-      'api::guia-didatico.guia-didatico': ApiGuiaDidaticoGuiaDidatico;
       'api::material-didatico.material-didatico': ApiMaterialDidaticoMaterialDidatico;
       'api::ponto-de-coleta.ponto-de-coleta': ApiPontoDeColetaPontoDeColeta;
       'api::postagem.postagem': ApiPostagemPostagem;

@@ -9,7 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -64,6 +64,30 @@
       "target": "plugin::users-permissions.role",
       "inversedBy": "users",
       "configurable": false
+    },
+    "comentarios": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comentario.comentario",
+      "mappedBy": "user"
+    },
+    "postagems": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::postagem.postagem",
+      "mappedBy": "user"
+    },
+    "material_didaticos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::material-didatico.material-didatico",
+      "mappedBy": "user"
+    },
+    "ponto_de_coletas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ponto-de-coleta.ponto-de-coleta",
+      "mappedBy": "user"
     }
   }
 }

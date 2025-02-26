@@ -15,9 +15,17 @@
       "type": "text",
       "minLength": 1
     },
-    "herdou": {
-      "type": "integer",
-      "required": false
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "comentarios"
+    },
+    "postagem": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::postagem.postagem",
+      "inversedBy": "comentarios"
     }
   }
 }

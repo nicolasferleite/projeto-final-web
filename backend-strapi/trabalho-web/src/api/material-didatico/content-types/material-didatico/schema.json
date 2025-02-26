@@ -38,6 +38,12 @@
     "id_material": {
       "type": "integer",
       "required": true
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "material_didaticos"
     }
   }
 }
