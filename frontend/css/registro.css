@@ -46,7 +46,7 @@ body{
 .radio{
     display: flex;
     margin-bottom: 50px;
-    justify-content: space-between;
+    justify-content: space-around;
     margin: 10px 0;
 }
 

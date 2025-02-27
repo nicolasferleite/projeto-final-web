@@ -1,0 +1,20 @@
+
+.login, .logout{
+    background-color: #90c381;
+    border: none;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.login:hover, .logout:hover{
+    background-color: #4CAF50;
+}
+
+#saudacao{
+    color: white;
+    font-size: 18px;
+}
