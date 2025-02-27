@@ -481,7 +481,6 @@ export interface ApiMaterialDidaticoMaterialDidatico
   };
   attributes: {
     arquivo: Schema.Attribute.Media<'files', true>;
-    autor: Schema.Attribute.String & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -489,7 +488,6 @@ export interface ApiMaterialDidaticoMaterialDidatico
       Schema.Attribute.SetMinMaxLength<{
         minLength: 1;
       }>;
-    id_material: Schema.Attribute.Integer & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

@@ -31,14 +31,6 @@
       "type": "text",
       "minLength": 1
     },
-    "autor": {
-      "type": "string",
-      "required": true
-    },
-    "id_material": {
-      "type": "integer",
-      "required": true
-    },
     "user": {
       "type": "relation",
       "relation": "manyToOne",

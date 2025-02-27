@@ -37,10 +37,6 @@ async function getOneRole(id) {
     return res.data
 }
 
-
-
-
-
 async function updateUser(user) {
     const res = await api.put(`/users/${user.documentId}`, 
         {

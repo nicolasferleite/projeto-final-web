@@ -3,7 +3,7 @@ const registroForm = document.getElementById('registroForm');
 registroForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   
-  const roleId = document.querySelector('input[name="tipoUsuario"]:checked').value; // Pegando o ID da role
+  const roleId = document.querySelector('input[name="tipoUsuario"]:checked').value;
   const nome = document.getElementById('nome').value;
   const email = document.getElementById('email').value;
   const senha = document.getElementById('senha').value;
@@ -14,7 +14,6 @@ registroForm.addEventListener('submit', async (event) => {
     return;
   }
 
-  // Criando o usuário sem a role (Strapi v4 não permite passar role diretamente)
   const userData = {
     username: nome,
     email: email,
@@ -22,7 +21,6 @@ registroForm.addEventListener('submit', async (event) => {
   };
 
   try {
-    // 1️⃣ Criar o usuário
     const response = await fetch('http://localhost:1337/api/auth/local/register', {
       method: 'POST',
       headers: {
@@ -41,19 +39,18 @@ registroForm.addEventListener('submit', async (event) => {
 
     console.log('Usuário registrado com sucesso:', data);
 
-    const userId = data.user.id; // Pegando o ID do usuário criado
+    const userId = data.user.id;
     const token = data.jwt;
     localStorage.setItem('token', token);
     localStorage.setItem('id', userId);
 
-    // 2️⃣ Atualizar a role do usuário (É necessário um token com permissões adequadas)
     const roleUpdateResponse = await fetch(`http://localhost:1337/api/users/${userId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}` // Usando o token do usuário autenticado
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ role: roleId }) // Passando o ID da role correta
+      body: JSON.stringify({ role: roleId })
     });
 
     const roleUpdateData = await roleUpdateResponse.json();

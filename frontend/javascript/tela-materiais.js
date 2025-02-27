@@ -137,3 +137,7 @@ async function handleMaterialSubmit(event) {
 materialForm.addEventListener('submit', handleMaterialSubmit);
 
 loadMaterials();
+
+
+
+
