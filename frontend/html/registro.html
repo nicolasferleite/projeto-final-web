@@ -25,16 +25,12 @@
       <div class="radio">
         <!-- Se você quiser capturar isso no JS, defina name e value -->
         <label>
-          <input type="radio" name="tipoUsuario" value="Professor" />
+          <input type="radio" name="tipoUsuario" value="3" />
           Professor
         </label>
         <label>
-          <input type="radio" name="tipoUsuario" value="Aluno" />
+          <input type="radio" name="tipoUsuario" value="4" />
           Aluno
-        </label>
-        <label>
-          <input type="radio" name="tipoUsuario" value="Administrador" />
-          Administrador
         </label>
       </div>
 
@@ -42,6 +38,7 @@
         <label>
           Nome
           <input
+            id="nome"
             type="text"
             name="nome"
             placeholder="Digite seu nome"
@@ -53,6 +50,7 @@
         <label>
           Email
           <input
+            id="email"
             type="email"
             name="email"
             placeholder="Digite seu email"
@@ -64,6 +62,7 @@
         <label>
           Senha
           <input
+            id="senha"
             type="password"
             name="senha"
             placeholder="Digite sua senha"
@@ -75,6 +74,7 @@
         <label>
           Confirmar Senha
           <input
+            id="confirmarSenha"
             type="password"
             name="confirmarSenha"
             placeholder="Confirme sua senha"
@@ -88,6 +88,9 @@
   </div>
 
   <!-- Script de registro -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../js/axios.js"></script>
+  <script src="../js/user.js"></script>
   <script src="../js/registro.js"></script>
 </body>
 </html>
