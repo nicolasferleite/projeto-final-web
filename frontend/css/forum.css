@@ -260,3 +260,264 @@ footer{
 .comments button:hover {
     background-color: #0056b3;
 }
+
+.hidden {
+    display: none;
+}
+
+#post-form {
+    margin-bottom: 2rem;
+}
+
+#post-form input,
+#post-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#post-form button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.post-item {
+    background-color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.post-item p {
+    margin-bottom: 0.5rem;
+}
+
+.post-item button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+.modal-content h3 {
+    margin-bottom: 1rem;
+}
+
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-content button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.comentarios-container {
+    border-top: 1px solid #ddd;
+    margin-top: 8px;
+    padding-top: 8px;
+}
+
+.comentario {
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.excluir-comentario-btn {
+    margin-left: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.post-form {
+    margin-bottom: 2rem;
+}
+
+.post-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.post-form input,
+.post-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.publish-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Lista de postagens */
+.posts-list {
+    list-style: none;
+    padding: 0;
+}
+
+/* Cartão de postagem */
+.post-card {
+    background-color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.post-card h3 {
+    margin-top: 0;
+}
+
+.post-card p {
+    margin-bottom: 0.5rem;
+}
+
+.post-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.editar-btn,
+.excluir-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.excluir-btn {
+    background-color: #dc3545;
+}
+
+.expandir-btn {
+    background-color: #ffc107;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Comentários */
+.comentarios-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.comentario {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+/* Modal de edição */
+#modalEditar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#modalEditar.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+.modal-content h3 {
+    margin-bottom: 1rem;
+}
+
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-content button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 10px;
+}

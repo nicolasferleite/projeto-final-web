@@ -77,12 +77,6 @@
       "target": "api::postagem.postagem",
       "mappedBy": "user"
     },
-    "material_didaticos": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::material-didatico.material-didatico",
-      "mappedBy": "user"
-    },
     "ponto_de_coletas": {
       "type": "relation",
       "relation": "oneToMany",

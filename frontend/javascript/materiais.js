@@ -1,11 +1,12 @@
 async function getAllMaterials() {
     try {
-        const res = await api.get('/materiais-didaticos?populate=*');
+        const res = await api.get('/materiais-didaticos?populate=user');
         return res.data;
     } catch (error) {
         console.error("Erro ao buscar materiais:", error);
     }
 }
+
 
 async function getOneMaterial(id) {
     try {
@@ -17,21 +18,18 @@ async function getOneMaterial(id) {
 }
 
 async function createMaterial(material) {
-    try {
-        const res = await api.post('/materiais-didaticos', {
-            data: {
-                titulo: material.titulo,
-                descricao: material.descricao,
-                arquivo: material.arquivo, 
-                video_url: material.video_url,
-                user: material.user
-            }
-        });
-        return res.data;
-    } catch (error) {
-        console.error("Erro ao criar material:", error);
-    }
+    const res = await api.post('/materiais-didaticos', {
+        data: {
+            titulo: material.titulo,
+            descricao: material.descricao,
+            arquivo: material.arquivo,
+            video_url: material.video_url,
+            user: { id: material.userId }
+        }
+    });
+    return res.data;
 }
+
 
 async function updateMaterial(material) {
     try {
@@ -58,3 +56,18 @@ async function eraseMaterial(material) {
         console.error(`Erro ao deletar material com ID ${material.id}:`, error);
     }
 }
+
+async function eraseMaterial(material) {
+    try {
+        await api.delete(`/materiais-didaticos/${material.id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error(`Erro ao deletar material com ID ${material.id}:`, error);
+        return false;
+    }
+}
+

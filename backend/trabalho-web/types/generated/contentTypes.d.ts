@@ -480,7 +480,6 @@ export interface ApiMaterialDidaticoMaterialDidatico
     draftAndPublish: true;
   };
   attributes: {
-    arquivo: Schema.Attribute.Media<'files', true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -503,7 +502,7 @@ export interface ApiMaterialDidaticoMaterialDidatico
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     user: Schema.Attribute.Relation<
-      'manyToOne',
+      'oneToOne',
       'plugin::users-permissions.user'
     >;
     video_url: Schema.Attribute.Text &
@@ -517,6 +516,7 @@ export interface ApiPontoDeColetaPontoDeColeta
   extends Struct.CollectionTypeSchema {
   collectionName: 'ponto_de_coletas';
   info: {
+    description: '';
     displayName: 'Ponto de Coleta';
     pluralName: 'ponto-de-coletas';
     singularName: 'ponto-de-coleta';
@@ -534,15 +534,14 @@ export interface ApiPontoDeColetaPontoDeColeta
         minLength: 1;
       }>;
     horarioFuncionamento: Schema.Attribute.String;
-    id_ponto: Schema.Attribute.UID<'nome'> & Schema.Attribute.Required;
-    latitude: Schema.Attribute.Float;
+    latitude: Schema.Attribute.Decimal;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::ponto-de-coleta.ponto-de-coleta'
     > &
       Schema.Attribute.Private;
-    longitude: Schema.Attribute.Float;
+    longitude: Schema.Attribute.Decimal;
     nome: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         minLength: 1;
@@ -1084,10 +1083,6 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
-    material_didaticos: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::material-didatico.material-didatico'
-    >;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{

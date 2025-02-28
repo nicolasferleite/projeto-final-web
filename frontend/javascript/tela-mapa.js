@@ -1,71 +1,128 @@
 
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXZpbGF2YXNjb25jZWxvcyIsImEiOiJjbTdncTY2djgxMWoxMmpva3J4czFqdGFsIn0.mxa0lawd98zjJj1NyFwpUw';
 
-function initMap() {
+let currentUser = null;
+let selectedCoords = null;
+let map = null;
+
+async function initMap() {
   try {
-    const map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v12',
       center: [-39.0186, -4.9783], 
-      zoom: 13
+      zoom: 14
     });
 
-   
     map.addControl(new mapboxgl.NavigationControl());
-
-
-    addMarkers(map);
-
+    setupMapClick(map);
+    return map;
   } catch (error) {
     console.error('Erro ao carregar o mapa:', error);
     alert('Falha ao carregar o mapa. Verifique o console para detalhes.');
   }
 }
 
-function addMarkers(map) {
-    const pontosDeColeta = [
-      { 
-        lng: -39.0186, 
-        lat: -4.9783, 
-        title: 'Centro de Quixadá', 
-        description: 'Ponto de coleta de recicláveis' 
-      },
-      { 
-        lng: -39.0200, 
-        lat: -4.9800, 
-        title: 'Ponto de Reciclagem', 
-        description: 'Coleta de plástico e vidro' 
-      },
-      { 
-        lng: -39.0150, 
-        lat: -4.9720, 
-        title: 'Avenida José de Queiroz', 
-        description: 'Eletrônicos e pilhas' 
-      },
-      { 
-        lng: -39.0250, 
-        lat: -4.9850, 
-        title: 'Bairro Planalto', 
-        description: 'Resíduos orgânicos e plástico' 
-      },
-      { 
-        lng: -39.0123, 
-        lat: -4.9690, 
-        title: 'Campus do IFCE', 
-        description: 'Posto de coleta universitário' 
-      }
-    ];
-  
+async function checkAdmin() {
+  try {
+    const token = localStorage.getItem('token');
+    console.log('Token JWT:', localStorage.getItem('token'));
+    if (!token) {
+      console.log('Usuário não está logado.');
+      return;
+    }
 
-  pontosDeColeta.forEach(ponto => {
-    const marker = new mapboxgl.Marker({ color: '#4CAF50' })
-      .setLngLat([ponto.lng, ponto.lat])
-      .setPopup(new mapboxgl.Popup().setHTML(`
-        <h3>${ponto.title}</h3>
-        <p>${ponto.description}</p>
-      `))
-      .addTo(map);
+    const response = await axios.get('http://localhost:1337/api/users/me?populate=role', {
+
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    console.log(response);
+    
+    if (!response.data) {
+      throw new Error('Resposta da API vazia ou inválida.');
+    }
+
+    currentUser = response.data;
+    console.log('Usuário atual:', currentUser);
+
+    if (currentUser.role.name === 'Administrador') {
+      console.log('Usuário é administrador. Exibindo controles.');
+      document.querySelector('.admin-controls').style.display = 'block';
+      document.getElementById('addPointBtn').addEventListener('click', () => {
+        document.getElementById('pointForm').style.display = 'block';
+      });
+    } else {
+      console.log('Usuário não é administrador.');
+    }
+  } catch (error) {
+    console.error('Erro ao verificar permissões:', error);
+    alert('Falha ao verificar permissões. Verifique o console para detalhes.');
+  }
+}
+
+function setupMapClick(map) {
+  map.on('click', (e) => {
+    if (currentUser?.role?.name === 'Administrador') {
+      selectedCoords = [e.lngLat.lng, e.lngLat.lat];
+    }
   });
 }
 
-document.addEventListener('DOMContentLoaded', initMap);
+async function addMarkers(map) {
+  try {
+    document.querySelectorAll('.mapboxgl-marker').forEach(marker => marker.remove());
+
+    const response = await axios.get('http://localhost:1337/api/ponto-de-coletas');
+    const pontosDeColeta = response.data.data;
+
+    for (const ponto of pontosDeColeta) {
+      const markerContainer = document.createElement('div');
+      markerContainer.className = 'marker-container';
+      
+
+      const marker = new mapboxgl.Marker({ element: markerContainer }) 
+        .setLngLat([ponto.longitude, ponto.latitude])
+        .setPopup(new mapboxgl.Popup().setHTML(`
+          <h3>${ponto.nome}</h3>
+          <p>${ponto.endereco}</p>
+        `))
+        .addTo(map);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar pontos:', error);
+  }
+}
+
+async function createPoint(pointData) {
+  try {
+    const token = localStorage.getItem('token');
+    await axios.post('http://localhost:1337/api/ponto-de-coletas',{data:pointData} , {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    alert('Ponto criado com sucesso!');
+    await addMarkers(map);
+  } catch (error) {
+    console.error('Erro ao criar ponto:', error);
+    alert('Falha ao criar ponto. Verifique o console para detalhes.');
+  }
+}
+
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await checkAdmin();
+  const map = await initMap();
+  await addMarkers(map);
+});
+
+document.getElementById('savePoint')?.addEventListener('click', async () => {
+  const pointData = {
+    nome: document.getElementById('title').value,
+    endereco: document.getElementById('description').value,
+    longitude: selectedCoords[0],
+    latitude: selectedCoords[1]
+  };
+  
+  await createPoint(pointData);
+});

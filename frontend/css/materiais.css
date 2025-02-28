@@ -174,3 +174,61 @@ button:hover {
         grid-template-columns: 1fr;
     }
 }
+
+.material-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.material-card button.btn-excluir {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.9rem;
+}
+
+.button-container {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-editar {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-editar:hover {
+    background-color: #e67e22;
+}
+
+.btn-excluir {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-excluir:hover {
+    background-color: #c0392b;
+}
+
+
+#newMaterialBtn {
+    display: none;
+}

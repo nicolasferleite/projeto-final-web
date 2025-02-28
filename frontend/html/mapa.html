@@ -34,14 +34,23 @@
 
     <div class="container">
         <div id="map">
-            <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-            <script src="../javascript/tela-mapa.js"></script>
+            
         </div>
     </div>
-    
+    <div class="admin-controls" style="display: none;">
+      <button id="addPointBtn">Adicionar Ponto</button>
+      <div id="pointForm" style="display: none;">
+        Após digitar as informações do ponto, clique onde deseja no mapa para adicionar-lo. Pronto! agora é só salvar.
+        <input type="text" id="title" placeholder="Título">
+        <textarea id="description" placeholder="Descrição"></textarea>
+        <button id="savePoint">Salvar</button>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="../javascript/axios.js"></script>
     <script src="../javascript/user.js"></script>
     <script src="../javascript/tela-main.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="../javascript/tela-mapa.js"></script>
   </body>
 </html>

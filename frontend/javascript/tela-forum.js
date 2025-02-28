@@ -1,206 +1,432 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const postsContainer = document.getElementById("posts-container");
-    const postForm = document.getElementById("create-post-form");
+async function getAllPostagens() {
+    try {
+        const res = await api.get('/postagems?populate=user&populate=comentarios.user');
+        return res.data;
+    } catch (error) {
+        console.error("Erro ao buscar postagens:", error);
+        return null;
+    }
+}
 
-    postForm.addEventListener("submit", function (e) {
-        e.preventDefault();
+document.addEventListener('DOMContentLoaded', async () => {
+    await carregarPostagens();
+});
 
-        const title = document.getElementById("post-title").value.trim();
-        const content = document.getElementById("post-content").value.trim();
+async function carregarPostagens() {
+    const container = document.getElementById('posts-container');
+    container.innerHTML = '<p>Carregando postagens...</p>';
 
-        if (title === "" || content === "") return;
+    const dados = await getAllPostagens();
+    if (!dados || !dados.data) {
+        container.innerHTML = '<p>Não foi possível carregar as postagens.</p>';
+        return;
+    }
 
-        submitPost(title, content);
+    container.innerHTML = '';
+    const userLogadoId = parseInt(localStorage.getItem('id'), 10);
+
+    dados.data.forEach(postagem => {
+        const { documentId, titulo = 'Sem título', conteudo = 'Sem conteúdo', user = null, comentarios = [] } = postagem;
+
+        const autorNome = user?.username || 'Autor desconhecido';
+        const autorId = user?.id;
+
+        const card = document.createElement('div');
+        card.classList.add('post-card');
+        card.setAttribute('data-post-id', documentId);
+
+        card.comentarios = comentarios;
+
+        card.innerHTML = `
+            <h3>${titulo}</h3>
+            <p>${conteudo}</p>
+            <p><strong>Autor:</strong> ${autorNome}</p>
+            <div class="post-buttons">
+                <button class="expandir-btn">Expandir Comentários</button>
+            </div>
+        `;
+
+        const buttonContainer = card.querySelector('.post-buttons');
+
+        if (userLogadoId === autorId) {
+            const btnEditar = document.createElement('button');
+            btnEditar.textContent = 'Editar';
+            btnEditar.classList.add('editar-btn');
+            btnEditar.onclick = () => editarPostagem(documentId, titulo, conteudo);
+
+            const btnExcluir = document.createElement('button');
+            btnExcluir.textContent = 'Excluir';
+            btnExcluir.classList.add('excluir-btn');
+            btnExcluir.onclick = () => deletarPostagem(documentId);
+
+            buttonContainer.appendChild(btnEditar);
+            buttonContainer.appendChild(btnExcluir);
+        }
+
+        container.appendChild(card);
+
+        buttonContainer.querySelector('.expandir-btn').addEventListener('click', () => {
+            expandirPostagem(card, documentId);
+        });
     });
+}
 
-    function submitPost(title, content) {
-        console.log(`📝 Enviando nova postagem: ${title}`);
-    
-        fetch("http://localhost:1337/api/postagems", {
-            method: "POST",
+
+async function deletarPostagem(documentId) {
+    if (confirm('Tem certeza que deseja excluir esta postagem?')) {
+        try {
+            const token = localStorage.getItem('token');
+            const url = `http://localhost:1337/api/postagems/${documentId}`;
+
+            console.log(`Deletando postagem com documentId: ${documentId}`);
+
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                const erro = await response.json();
+                console.error('Erro completo:', erro);
+                throw new Error(erro.error?.message || 'Erro desconhecido ao excluir');
+            }
+
+            alert('Postagem excluída com sucesso!');
+            await carregarPostagens();
+
+        } catch (error) {
+            console.error(`Erro ao excluir postagem ${documentId}:`, error);
+            alert(`Erro ao excluir postagem: ${error.message}`);
+        }
+    }
+}
+
+let postagemEditando = null;
+
+function editarPostagem(documentId, tituloAtual, conteudoAtual) {
+    postagemEditando = documentId;
+
+    const modal = document.getElementById('modalEditar');
+    const inputTitulo = document.getElementById('novoTitulo');
+    const textareaConteudo = document.getElementById('novoConteudo');
+
+    inputTitulo.value = tituloAtual;
+    textareaConteudo.value = conteudoAtual;
+    modal.classList.remove('hidden');
+
+    const btnSalvar = document.getElementById('salvarEdicao');
+    btnSalvar.onclick = salvarEdicao;
+}
+
+async function salvarEdicao() {
+    const novoTitulo = document.getElementById('novoTitulo').value;
+    const novoConteudo = document.getElementById('novoConteudo').value;
+
+    try {
+        const token = localStorage.getItem('token');
+        const url = `http://localhost:1337/api/postagems/${postagemEditando}`;
+
+        const response = await fetch(url, {
+            method: 'PUT',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({
                 data: {
-                    conteudo: content,
-                    data: new Date().toISOString(),
-                    titulo: title,
-                    id_postagem: 1,
-                    likes: 0,
-                    comentarios: []
+                    titulo: novoTitulo,
+                    conteudo: novoConteudo
                 }
             })
-        })
-        .then(response => {
+        });
+
+        if (!response.ok) {
+            const erro = await response.json();
+            throw new Error(erro.error?.message || 'Erro ao salvar edição');
+        }
+
+        alert('Postagem atualizada com sucesso!');
+        fecharModal();
+        await carregarPostagens();
+
+    } catch (error) {
+        alert(`Erro ao salvar postagem: ${error.message}`);
+        console.error('Erro na edição:', error);
+    }
+}
+
+function fecharModal() {
+    document.getElementById('modalEditar').classList.add('hidden');
+    postagemEditando = null;
+}
+
+document.getElementById('create-post-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const titulo = document.getElementById('post-title').value.trim();
+    const conteudo = document.getElementById('post-content').value.trim();
+
+    if (!titulo || !conteudo) {
+        alert('Preencha todos os campos!');
+        return;
+    }
+
+    const userId = localStorage.getItem('id');
+    if (!userId) {
+        alert('Você precisa estar logado para criar uma postagem!');
+        return;
+    }
+
+    const payload = {
+        data: {
+            titulo,
+            conteudo,
+            user: {
+                connect: [{ id: userId }]
+            }
+        }
+    };
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:1337/api/postagems', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            console.error('Erro completo:', result);
+            throw new Error(result.error?.message || 'Erro desconhecido ao criar postagem');
+        }
+
+        alert('Postagem criada com sucesso!');
+        document.getElementById('create-post-form').reset();
+        await carregarPostagens();
+
+    } catch (error) {
+        console.error('Erro ao criar postagem:', error);
+        alert(`Erro: ${error.message}`);
+    }
+});
+
+function expandirPostagem(card, documentId) {
+    let comentariosContainer = card.querySelector('.comentarios-container');
+
+    if (comentariosContainer) {
+        comentariosContainer.remove();
+        return;
+    }
+
+    comentariosContainer = document.createElement('div');
+    comentariosContainer.classList.add('comentarios-container');
+    comentariosContainer.innerHTML = '<p>Carregando comentários...</p>';
+    card.appendChild(comentariosContainer);
+
+    if (card.comentarios.length === 0) {
+        comentariosContainer.innerHTML = '<p>Nenhum comentário ainda.</p>';
+    } else {
+        comentariosContainer.innerHTML = '';
+
+        card.comentarios.forEach(comentario => {
+            const autor = comentario.user?.username || 'Anônimo';
+            const conteudo = comentario.conteudo;
+
+            const comentarioElement = document.createElement('div');
+            comentarioElement.classList.add('comentario');
+            comentarioElement.innerHTML = `<p><strong>${autor}:</strong> ${conteudo}</p>`;
+            comentariosContainer.appendChild(comentarioElement);
+        });
+    }
+
+    const formComentario = document.createElement('form');
+    formComentario.innerHTML = `
+        <textarea placeholder="Escreva seu comentário..." required></textarea>
+        <button type="submit">Comentar</button>
+    `;
+
+    formComentario.onsubmit = async (e) => {
+        e.preventDefault();
+
+        const conteudo = formComentario.querySelector('textarea').value.trim();
+        if (!conteudo) return;
+
+        await adicionarComentario(documentId, conteudo, comentariosContainer);
+
+        formComentario.reset();
+    };
+
+    comentariosContainer.appendChild(formComentario);
+}
+
+async function adicionarComentario(documentId, conteudo, container) {
+    const userId = localStorage.getItem('id');
+    if (!userId) {
+        alert('Você precisa estar logado para comentar!');
+        return;
+    }
+
+    const payload = {
+        data: {
+            conteudo,
+            postagem: {
+                connect: [{ documentId }]
+            },
+            user: {
+                connect: [{ id: userId }]
+            }
+        }
+    };
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:1337/api/comentarios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const result = await response.json();
+            console.error('Erro completo:', result);
+            throw new Error(result.error?.message || 'Erro desconhecido ao adicionar comentário');
+        }
+
+        alert('Comentário adicionado com sucesso!');
+        await expandirPostagem(documentId);
+
+    } catch (error) {
+        console.error(`Erro ao adicionar comentário:`, error);
+        alert(`Erro ao adicionar comentário: ${error.message}`);
+    }
+}
+
+async function deletarComentario(comentarioDocumentId, postagemDocumentId) {
+    if (confirm('Tem certeza que deseja excluir seu comentário?')) {
+        try {
+            const token = localStorage.getItem('token');
+            const url = `http://localhost:1337/api/comentarios/${comentarioDocumentId}`;
+
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
             if (!response.ok) {
-                return response.json().then(errorData => {
-                    throw new Error(`Erro HTTP: ${response.status} - ${JSON.stringify(errorData)}`);
-                });
+                const erro = await response.json();
+                console.error('Erro completo:', erro);
+                throw new Error(erro.error?.message || 'Erro desconhecido ao excluir');
             }
-            return response.json();
-        })
-        .then(newPostData => {
-            console.log("Resposta da API:", newPostData);
-    
-            if (newPostData.data) {
-                console.log("✅ Postagem salva com sucesso!");
-    
-                const postId = newPostData.data.id;
-                const postTitle = newPostData.data.attributes ? newPostData.data.attributes.titulo : newPostData.data.titulo;
-                const postContent = newPostData.data.attributes ? newPostData.data.attributes.conteudo : newPostData.data.conteudo; 
-    
-                addPostToUI(postId, postTitle, postContent);
-    
-                document.getElementById("post-title").value = "";
-                document.getElementById("post-content").value = "";
-            } else {
-                console.error("Erro ao adicionar postagem:", newPostData);
+
+            alert('Comentário excluído com sucesso!');
+            await expandirPostagem(postagemDocumentId);
+
+        } catch (error) {
+            console.error(`Erro ao excluir comentário ${comentarioDocumentId}:`, error);
+            alert(`Erro ao excluir comentário: ${error.message}`);
+        }
+    }
+}
+
+async function adicionarComentario(documentId, conteudo, container) {
+    const userId = localStorage.getItem('id');
+    if (!userId) {
+        alert('Você precisa estar logado para comentar!');
+        return;
+    }
+
+    const payload = {
+        data: {
+            conteudo,
+            postagem: {
+                connect: [{ documentId }]
+            },
+            user: {
+                connect: [{ id: userId }]
             }
-        })
-        .catch(error => {
-            console.error("❌ Erro ao enviar postagem:", error.message);
-            alert("Erro ao adicionar postagem: " + error.message);
+        }
+    };
+
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:1337/api/comentarios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
         });
-    }
-    
-    function addPostToUI(postId, titulo, conteudo) {
-        const postDiv = document.createElement("div");
-        postDiv.classList.add("post");
 
-        const title = document.createElement("h2");
-        title.textContent = titulo;
-        postDiv.appendChild(title);
+        if (!response.ok) {
+            const result = await response.json();
+            console.error('Erro completo ao adicionar comentário:', result);
+            throw new Error(result.error?.message || 'Erro desconhecido ao adicionar comentário');
+        }
 
-        const content = document.createElement("p");
-        content.textContent = conteudo;
-        postDiv.appendChild(content);
+        alert('Comentário adicionado com sucesso!');
 
-        const btnComments = document.createElement("button");
-        btnComments.textContent = "Comentários";
-        btnComments.addEventListener("click", function () {
-            toggleComments(postId, postDiv);
-        });
-        postDiv.appendChild(btnComments);
-
-        postsContainer.prepend(postDiv);
-    }
-
-    function loadPosts() {
-        postsContainer.innerHTML = "";
-
-        fetch("http://localhost:1337/api/postagems")
-            .then(response => response.json())
-            .then(data => {
-                const posts = data.data;
-                posts.forEach(post => {
-                    const postTitle = post.attributes ? post.attributes.titulo : post.titulo;
-                    const postContent = post.attributes ? post.attributes.conteudo : post.conteudo;
-                    addPostToUI(post.id, postTitle, postContent);
-                });
-            })
-            .catch(error => console.error("Erro ao carregar posts:", error));
-    }
-
-
-    function toggleComments(postId, postDiv) {
-        let commentsContainer = postDiv.querySelector(".comments");
-
-        if (commentsContainer) {
-            commentsContainer.remove();
+        const postagemAtualizada = await getOnePostagemByDocumentId(documentId);
+        if (!postagemAtualizada) {
+            alert('Erro ao buscar postagem atualizada após comentário.');
             return;
         }
 
-        commentsContainer = document.createElement("div");
-        commentsContainer.classList.add("comments");
-        commentsContainer.dataset.postId = postId;
+        container.innerHTML = '';
 
-        fetch("http://localhost:1337/api/comentarios")
-            .then(response => response.json())
-            .then(data => {
-                const allComments = data.data;
-                const filteredComments = allComments.filter(comment => comment.herdou === postId);
+        if (postagemAtualizada.comentarios.length === 0) {
+            container.innerHTML = '<p>Nenhum comentário ainda.</p>';
+        } else {
+            postagemAtualizada.comentarios.forEach(comentario => {
+                const autor = comentario.user?.username || 'Anônimo';
+                const comentarioElement = document.createElement('div');
+                comentarioElement.classList.add('comentario');
+                comentarioElement.innerHTML = `<p><strong>${autor}:</strong> ${comentario.conteudo}</p>`;
+                container.appendChild(comentarioElement);
+            });
+        }
 
-                if (filteredComments.length > 0) {
-                    filteredComments.forEach(comment => {
-                        const commentDiv = createCommentElement(comment.conteudo);
-                        commentsContainer.appendChild(commentDiv);
-                    });
-                } else {
-                    const noComments = document.createElement("p");
-                    noComments.textContent = "Sem comentários.";
-                    commentsContainer.appendChild(noComments);
-                }
-            })
-            .catch(error => console.error("Erro ao carregar comentários:", error));
+        container.appendChild(formComentario);
 
-        const commentForm = document.createElement("form");
-        commentForm.style.marginTop = "1rem";
-
-        const textarea = document.createElement("textarea");
-        textarea.placeholder = "Escreva seu comentário";
-        textarea.required = true;
-        textarea.rows = 3;
-        textarea.cols = 40;
-        commentForm.appendChild(textarea);
-
-        const submitButton = document.createElement("button");
-        submitButton.type = "submit";
-        submitButton.textContent = "Enviar Comentário";
-        commentForm.appendChild(submitButton);
-
-        commentForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const commentContent = textarea.value.trim();
-            if (commentContent === "") return;
-
-            submitComment(commentContent, postId, commentsContainer, textarea);
-        });
-
-        commentsContainer.appendChild(commentForm);
-        postDiv.appendChild(commentsContainer);
+    } catch (error) {
+        console.error(`Erro ao adicionar comentário:`, error);
+        alert(`Erro ao adicionar comentário: ${error.message}`);
     }
+}
 
-    function createCommentElement(commentText) {
-        const commentDiv = document.createElement("div");
-        commentDiv.style.marginBottom = "0.5rem";
-        commentDiv.innerHTML = `<strong>Comentário:</strong> ${commentText}`;
-        return commentDiv;
+async function getOnePostagemByDocumentId(documentId) {
+    try {
+        const res = await api.get('/postagems?filters[documentId][$eq]=${documentId}&populate=comentarios.user');
+        const postagem = res.data?.data?.[0] || null;
+
+        if (!postagem) {
+            console.error('Nenhuma postagem encontrada com documentId ${documentId}');
+            return null;
+        }
+
+        return {
+            documentId: postagem.documentId,
+            titulo: postagem.titulo,
+            conteudo: postagem.conteudo,
+            comentarios: postagem.comentarios || []
+        };
+
+    } catch (error) {
+        console.error('Erro ao buscar postagem por documentId ${documentId}:', error);
+        return null;
     }
-
-    function submitComment(commentContent, postId, commentsContainer, textarea) {
-        console.log(`📝 Enviando novo comentário para a postagem ID: ${postId}`);
-
-        fetch("http://localhost:1337/api/comentarios", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                data: {
-                    conteudo: commentContent,
-                    herdou: postId
-                }
-            })
-        })
-        .then(response => response.json())
-        .then(newCommentData => {
-            if (newCommentData.data) {
-                console.log("✅ Comentário salvo com sucesso!");
-
-                const newCommentDiv = createCommentElement(commentContent);
-                commentsContainer.insertBefore(newCommentDiv, commentsContainer.querySelector("form"));
-
-                textarea.value = "";
-            } else {
-                console.error("Erro ao adicionar comentário:", newCommentData);
-            }
-        })
-        .catch(error => {
-            console.error("❌ Erro ao enviar comentário:", error.message);
-            alert("Erro ao adicionar comentário: " + error.message);
-        });
-    }
-
-    loadPosts();
-});
+}

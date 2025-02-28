@@ -41,7 +41,6 @@
             <form id="materialForm">
                 <input type="text" id="titulo" name="titulo" placeholder="Título" required>
                 <textarea id="descricao" name="descricao" placeholder="Descrição" required></textarea>
-                <input type="file" id="arquivo" name="arquivo" accept=".pdf,.doc,.docx">
                 <input type="text" id="video_url" name="video_url" placeholder="URL do YouTube">
             
                 <button type="submit">Salvar Material</button>
@@ -59,11 +58,24 @@
             <div id="modalBody"></div>
         </div>
     </div>  
+
+    <div id="modalEditar" class="modal hidden">
+        <div class="modal-content">
+            <h3>Editar Descrição</h3>
+            <textarea id="novaDescricao"></textarea>
+            <div class="modal-buttons">
+                <button id="salvarEdicao">Salvar</button>
+                <button onclick="fecharModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="../javascript/axios.js"></script>
     <script src="../javascript/user.js"></script>
     <script src="../javascript/tela-main.js"></script>
     <script src="../javascript/materiais.js" defer></script>
-    <script src="../javascript/tela-materiais.js" defer></script>
+    <script type="module" src="../javascript/tela-materiais.js"></script>
+
 </body>
 </html>

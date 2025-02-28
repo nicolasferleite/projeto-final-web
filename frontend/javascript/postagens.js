@@ -1,9 +1,10 @@
 async function getAllPostagens() {
     try {
-        const res = await api.get('/postagems?populate=*');
+        const res = await api.get('/postagems?populate=user');
         return res.data;
     } catch (error) {
         console.error("Erro ao buscar postagens:", error);
+        return null;
     }
 }
 

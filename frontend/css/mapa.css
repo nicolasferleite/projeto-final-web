@@ -1,90 +1,155 @@
+
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Be Vietnam Pro", serif;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Be Vietnam Pro", serif;
+}
 
 body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; 
-    overflow-y: hidden;
-    background-color: rgb(213, 225, 208);
-  }
-  
-  #map {
-    width: 1000px;
-    height: 600px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    border: 2px solid #90c381;
-    border-radius: 8px;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto; 
+  overflow-y: auto;
+  background-color: rgb(213, 225, 208);
+}
 
-  }
-  
-  .mapboxgl-popup-content {
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
-  
-  .mapboxgl-popup-content h3 {
-    margin: 0;
-    color: #2c3e50;
-    font-size: 14px;
-  }
+#map {
+  width: 1000px;
+  height: 600px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border: 2px solid #90c381;
+  border-radius: 8px;
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px 20px;
-    background-color: #90c381;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 80px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.216); 
+}
+
+.mapboxgl-popup-content {
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.mapboxgl-popup-content {
+  padding: 15px !important;
+  border-radius: 8px !important;
+  min-width: 200px;
+}
+
+.mapboxgl-popup-content h3 {
+  margin: 0 0 8px 0;
+  color: #2c3e50;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mapboxgl-popup-content p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
+  background-color: #90c381;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 80px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.216); 
 }
 body {
-    margin: 0; 
- 
+  margin: 0; 
+
 }
 .perfil {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  
 }
 
 .perfil img {
-    width: 40px;
-    height: 40px;
-   
+  width: 40px;
+  height: 40px;
+ 
 }
 
 .titulo {
-    font-size: 12px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 .titulo img{
-    height: 80px;
+  height: 80px;
 }
 
 a{
-    text-decoration: none;
-    color: #48793c;
+  text-decoration: none;
+  color: #48793c;
 }
 .container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    overflow-x: hidden;
-    margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  overflow-x: hidden;
+  margin-top: 100px;
 }
+
+.admin-controls {
+  position: fixed;
+  top: 120px; 
+  right: 20px;
+  z-index: 10000; 
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  max-width: 300px; 
+}
+
+.marker-container:hover .delete-marker {
+  display: block;
+}
+
+
+#pointForm {
+  display: none;
+  margin-top: 15px;
+}
+
+#pointForm input, 
+#pointForm textarea {
+width: 100%;
+padding: 8px;
+margin: 5px 0;
+border: 1px solid #ddd;
+border-radius: 4px;
+}
+
+#pointForm button {
+background: #4CAF50;
+color: white;
+border: none;
+padding: 8px 15px;
+border-radius: 4px;
+cursor: pointer;
+margin-top: 10px;
+}
+.mapboxgl-marker {
+width: 30px;
+height: 30px;
+background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234CAF50"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>');
+background-size: cover;
+cursor: pointer;
+transform: translate(-50%, -100%);
+transition: transform 0.2s ease; 
+}
+

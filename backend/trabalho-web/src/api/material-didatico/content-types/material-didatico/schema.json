@@ -19,23 +19,14 @@
       "type": "text",
       "minLength": 1
     },
-    "arquivo": {
-      "type": "media",
-      "multiple": true,
-      "required": false,
-      "allowedTypes": [
-        "files"
-      ]
-    },
     "video_url": {
       "type": "text",
       "minLength": 1
     },
     "user": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "material_didaticos"
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }
